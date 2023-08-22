@@ -109,6 +109,7 @@ def _go_sdk_impl(ctx):
                 tag_type = "download",
                 index = index,
             )
+            patch_args = ["-p{}".format(download_tag.patch_strip)] if download_tag.patch_strip else []
             go_download_sdk_rule(
                 name = name,
                 goos = download_tag.goos,
@@ -116,7 +117,7 @@ def _go_sdk_impl(ctx):
                 sdks = download_tag.sdks,
                 experiments = download_tag.experiments,
                 patches = download_tag.patches,
-                patch_strip = download_tag.patch_strip,
+                patch_args = patch_args,
                 urls = download_tag.urls,
                 version = download_tag.version,
                 strip_prefix = download_tag.strip_prefix,
