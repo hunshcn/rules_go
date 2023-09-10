@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+load(
+    "@bazel_tools//tools/build_defs/repo:utils.bzl",
+    "patch",
+)
 load(
     "//go/private:common.bzl",
     "executable_path",
@@ -24,17 +27,13 @@ load(
     "//go/private/skylib/lib:versions.bzl",
     "versions",
 )
-load(
-    "@bazel_tools//tools/build_defs/repo:utils.bzl",
-    "patch",
-)
 
 patch_attrs = {
     "patches": attr.label_list(
         default = [],
         doc =
-            "A list of files that are to be applied as patches after " +
-            "extracting the archive. By default, it uses the Bazel-native patch implementation " +
+            "A list of files that are to be applied as patches to go sdk. " +
+            "By default, it uses the Bazel-native patch implementation " +
             "which doesn't support fuzz match and binary patch, but Bazel will fall back to use " +
             "patch command line tool if `patch_tool` attribute is specified or there are " +
             "arguments other than `-p` in `patch_args` attribute.",
@@ -42,10 +41,9 @@ patch_attrs = {
     "remote_patches": attr.string_dict(
         default = {},
         doc =
-            "A map of patch file URL to its integrity value, they are applied after extracting " +
-            "the archive and before applying patch files from the `patches` attribute. " +
-            "It uses the Bazel-native patch implementation, you can specify the patch strip " +
-            "number with `remote_patch_strip`",
+            "A map of patch file URL to its integrity value, they are applied before applying patch" +
+            "files from the `patches` attribute. It uses the Bazel-native patch implementation, " +
+            "you can specify the patch strip number with `remote_patch_strip`",
     ),
     "remote_patch_strip": attr.int(
         default = 0,
